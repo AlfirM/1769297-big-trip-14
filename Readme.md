@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Альфир Мингазов](https://up.htmlacademy.ru/ecmascript/14/user/1769297).
-* Наставник: `Неизвестно`.
+* Наставник: [Артем Макаров](https://htmlacademy.ru/profile/deepsick).
 
 ---
 
