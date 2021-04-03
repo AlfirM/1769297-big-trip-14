@@ -23,5 +23,5 @@ const createSortingTemplate = () => {
   </form>
   <ul class="trip-events__list"></ul>`;
 };
-  
+
 export { createSortingTemplate };

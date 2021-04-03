@@ -136,6 +136,6 @@ const createEventEditTemplate = () => {
                     </section>
                   </section>
                 </form>`;
-  };
-  
+};
+
 export { createEventEditTemplate };

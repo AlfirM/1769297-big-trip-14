@@ -142,6 +142,6 @@ const createEventNewTemplate = () => {
                     </section>
                   </section>
                 </form>`;
-  };
-  
+};
+
 export { createEventNewTemplate };
