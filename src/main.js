@@ -34,5 +34,5 @@ render(tripEventsListElement, createEventEditTemplate());
 render(tripEventsListElement, createEventNewTemplate());
 
 for (let i = 0; i < EVENT_COUNT; i++) {
-  render(tripEventsListNode, createEventTemplate(), 'beforeend');
+  render(tripEventsListElement, createEventTemplate(), 'beforeend');
 }
