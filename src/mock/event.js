@@ -69,13 +69,13 @@ const getPhotos = () => {
 
 const getId = () => {
   let index = 1;
-  index += 1;  
+  index += 1;
   return index;
 };
 
 const generateOffers = () => {
   const randomCount = getRandomInteger(0, eventOffers.length - 1);
-    
+
   const offers = [];
 
   if(eventOffers.length === 0)
@@ -83,15 +83,13 @@ const generateOffers = () => {
     return offers;
   }
 
-  const randomOffer = eventOffers[0];
-
   for (let i = 0; i < randomCount; i++) {
-    randomOffer = eventOffers[getRandomInteger(0, eventOffers.length - 1)];
+    const randomOffer = eventOffers[getRandomInteger(0, eventOffers.length - 1)];
     if(offers.indexOf(randomOffer) == -1)
     {
       offers.push(randomOffer);
     }
-  }  
+  }
 
   return offers;
 };

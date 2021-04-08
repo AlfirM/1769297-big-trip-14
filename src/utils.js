@@ -15,16 +15,16 @@ export const getRandomItem = (ITEMS) => {
 
 export const getDuration = (timeStart, timeEnd) =>
 {
-  const duration = dayjs(timeEnd).diff(dayjs(timeStart), 'm');;
+  const duration = dayjs(timeEnd).diff(dayjs(timeStart), 'm');
 
   const hours = Math.floor(duration / 60) % 24;
 
   const days = Math.floor(duration / 1440);
- 
+
   const minutes = duration % 60;
 
   if (days === 0 && hours === 0 && minutes > 0) {
-    return minutes + 'M'    
+    return minutes + 'M';
 
   }else if (days === 0 && hours > 0) {
     return hours + 'H ' + minutes + 'M';
@@ -32,7 +32,7 @@ export const getDuration = (timeStart, timeEnd) =>
   }else if (days > 0) {
     return days + 'D ' + hours + 'H ' + minutes + 'M';
   }
-}
+};
 
 export const createOfferMarkup = (offers) => {
   return offers
