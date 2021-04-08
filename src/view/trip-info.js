@@ -1,5 +1,5 @@
 const createTripInfoTemplate = (events) => {
-  let max_events_count_in_info_board = 3;
+  const max_events_count_in_info_board = 3;
   let cities = '';
 
   if (events.length === 0) {

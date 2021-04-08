@@ -19,7 +19,7 @@ const Lengths = {
 const Gaps = {
   MAX_DAY_GAP: 5,
   MIN_TIME_GAP: 30,
-  MAX_TIME_GAP: 3000
+  MAX_TIME_GAP: 3000,
 };
 
 let index = 1;
