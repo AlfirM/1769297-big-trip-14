@@ -1,4 +1,4 @@
-import {createOfferMarkup, humanizeDate} from '../utils.js';
+import {humanizeDate} from '../utils.js';
 
 const createOfferListTemplate = (offers) => {
   if (offers.length > 0) {

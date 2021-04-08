@@ -24,69 +24,76 @@ const DESCRIPTIONS = [
 ];
 
 const eventOffers = [
-    {
-      name: 'luggage',
-      title: 'Add luggage',
-      price: 50,
-    },
-    {
-      name: 'comfort',
-      title: 'Switch to comfort class',
-      price: 80,
-    },
-    {
-      name: 'train',
-      title: 'Travel by train',
-      price: 40,
-    },
-    {
-      name: 'rent',
-      title: 'Rent a car',
-      price: 200,
-    },
-    {
-      name: 'breakfast',
-      title: 'Add breakfast',
-      price: 50,
-    },
-    {
-      name: 'lunch',
-      title: 'ALunch in city',
-      price: 30,
-    },
-  ];
+  {
+    name: 'luggage',
+    title: 'Add luggage',
+    price: 50,
+  },
+  {
+    name: 'comfort',
+    title: 'Switch to comfort class',
+    price: 80,
+  },
+  {
+    name: 'train',
+    title: 'Travel by train',
+    price: 40,
+  },
+  {
+    name: 'rent',
+    title: 'Rent a car',
+    price: 200,
+  },
+  {
+    name: 'breakfast',
+    title: 'Add breakfast',
+    price: 50,
+  },
+  {
+    name: 'lunch',
+    title: 'ALunch in city',
+    price: 30,
+  },
+];
 
 const MIN_PHOTOS_LENGTH = 1;
 const MAX_PHOTOS_LENGTH = 3;
 
 const getRandomPhoto = () => {
-    return `http://picsum.photos/248/152?r=${Math.random()}`;
+  return `http://picsum.photos/248/152?r=${Math.random()}`;
 };
-  
+
 const getPhotos = () => {
-    return new Array(getRandomInteger(MIN_PHOTOS_LENGTH, MAX_PHOTOS_LENGTH)).fill().map(() => getRandomPhoto());
+  return new Array(getRandomInteger(MIN_PHOTOS_LENGTH, MAX_PHOTOS_LENGTH)).fill().map(() => getRandomPhoto());
 };
 
 const getId = () => {
-    let index = 1;
-    index += 1;  
-    return index;
+  let index = 1;
+  index += 1;  
+  return index;
 };
 
 const generateOffers = () => {
-    const randomIndex = getRandomInteger(0, eventOffers.length - 1);
+  const randomCount = getRandomInteger(0, eventOffers.length - 1);
     
-    let offers = [];
+  const offers = [];
 
-    for (let i = 0; i < randomIndex; i++) {
-      let randomOffer = eventOffers[getRandomInteger(0, eventOffers.length - 1)];
-      if(offers.indexOf(randomOffer) == -1)
-      {
-        offers.push(randomOffer);
-      }
-    }  
-
+  if(eventOffers.length === 0)
+  {
     return offers;
+  }
+
+  const randomOffer = eventOffers[0];
+
+  for (let i = 0; i < randomCount; i++) {
+    randomOffer = eventOffers[getRandomInteger(0, eventOffers.length - 1)];
+    if(offers.indexOf(randomOffer) == -1)
+    {
+      offers.push(randomOffer);
+    }
+  }  
+
+  return offers;
 };
 
 
