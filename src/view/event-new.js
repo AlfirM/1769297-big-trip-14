@@ -1,4 +1,21 @@
-import {createOfferMarkup, humanizeDate} from '../utils.js';
+import {humanizeDate} from '../utils.js';
+
+const createOfferMarkup = (offers) => {
+  return offers
+    .map((item) => {
+      return `
+        <div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="${item.title}" type="checkbox" name="event-offer-${item.title}">
+          <label class="event__offer-label" for="${item.title}">
+            <span class="event__offer-title">${item.title}</span>
+            &plus;&euro;&nbsp;
+            <span class="event__offer-price">${item.price}</span>
+          </label>
+        </div>
+        `;
+    })
+    .join(' ');
+};
 
 const createPhotoMarkup = (photos) => {
   return photos

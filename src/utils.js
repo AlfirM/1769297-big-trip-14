@@ -15,40 +15,26 @@ export const getRandomItem = (ITEMS) => {
 
 export const getDuration = (timeStart, timeEnd) =>
 {
+  const hours_in_day = 24;
+  const minutes_in_hour = 60;
+
   const duration = dayjs(timeEnd).diff(dayjs(timeStart), 'm');
 
-  const hours = Math.floor(duration / 60) % 24;
+  const hours = Math.floor(duration / minutes_in_hour) % hours_in_day;
 
-  const days = Math.floor(duration / 1440);
+  const days = Math.floor(duration / (hours_in_day * minutes_in_hour));
 
-  const minutes = duration % 60;
+  const minutes = duration % minutes_in_hour;
 
   if (days === 0 && hours === 0 && minutes > 0) {
-    return minutes + 'M';
+    return `${minutes}M`;
 
   }else if (days === 0 && hours > 0) {
-    return hours + 'H ' + minutes + 'M';
+    return `${hours}H ${minutes}M`;
 
   }else if (days > 0) {
-    return days + 'D ' + hours + 'H ' + minutes + 'M';
+    return `${days}D ${hours}H ${minutes}M`;
   }
-};
-
-export const createOfferMarkup = (offers) => {
-  return offers
-    .map((item) => {
-      return `
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="${item.title}" type="checkbox" name="event-offer-${item.title}">
-          <label class="event__offer-label" for="${item.title}">
-            <span class="event__offer-title">${item.title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${item.price}</span>
-          </label>
-        </div>
-        `;
-    })
-    .join(' ');
 };
 
 export const humanizeDate = (dueDate, format) => {

@@ -2,13 +2,27 @@ import dayjs from 'dayjs';
 import {getRandomInteger, getRandomItem, getDuration} from '../utils.js';
 import {TYPES, CITIES} from '../const.js';
 
-const MIN_COST = 10;
-const MAX_COST = 1000;
-const MIN_DESCRIPTION_LENGTH = 1;
-const MAX_DESCRIPTION_LENGTH = 5;
-const MAX_DAY_GAP = 5;
-const MIN_TIME_GAP = 30;
-const MAX_TIME_GAP = 3000;
+const Costs = {
+  MIN_VALUE: 10,
+  MAX_VALUE: 1000,
+};
+
+const Lengths = {
+  MIN_DESCRIPTION_LENGTH: 1,
+  MAX_DESCRIPTION_LENGTH: 5,
+  MIN_PHOTOS_LENGTH: 1,
+  MAX_PHOTOS_LENGTH: 3,
+  MIN_OFFER: 1,
+  MAX_OFFER: 5,
+};
+
+const Gaps = {
+  MAX_DAY_GAP: 5,
+  MIN_TIME_GAP: 30,
+  MAX_TIME_GAP: 3000
+};
+
+let index = 1;
 
 const DESCRIPTIONS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -23,7 +37,7 @@ const DESCRIPTIONS = [
   'In rutrum ac purus sit amet tempus.',
 ];
 
-const eventOffers = [
+const EVENT_OFFERS = [
   {
     name: 'luggage',
     title: 'Add luggage',
@@ -51,65 +65,39 @@ const eventOffers = [
   },
   {
     name: 'lunch',
-    title: 'ALunch in city',
+    title: 'Lunch in city',
     price: 30,
   },
 ];
-
-const MIN_PHOTOS_LENGTH = 1;
-const MAX_PHOTOS_LENGTH = 3;
 
 const getRandomPhoto = () => {
   return `http://picsum.photos/248/152?r=${Math.random()}`;
 };
 
 const getPhotos = () => {
-  return new Array(getRandomInteger(MIN_PHOTOS_LENGTH, MAX_PHOTOS_LENGTH)).fill().map(() => getRandomPhoto());
+  return new Array(getRandomInteger(Lengths.MIN_PHOTOS_LENGTH, Lengths.MAX_PHOTOS_LENGTH)).fill().map(() => getRandomPhoto());
 };
 
 const getId = () => {
-  let index = 1;
-  index += 1;
+  index++;
   return index;
 };
 
-const generateOffers = () => {
-  const randomCount = getRandomInteger(0, eventOffers.length - 1);
-
-  const offers = [];
-
-  if(eventOffers.length === 0)
-  {
-    return offers;
-  }
-
-  for (let i = 0; i < randomCount; i++) {
-    const randomOffer = eventOffers[getRandomInteger(0, eventOffers.length - 1)];
-    if(offers.indexOf(randomOffer) == -1)
-    {
-      offers.push(randomOffer);
-    }
-  }
-
-  return offers;
-};
-
-
 const generateEvent = () => {
-  const timeStart = dayjs().add(getRandomInteger(-MAX_DAY_GAP, MAX_DAY_GAP), 'day');
-  const timeEnd = dayjs(timeStart).add(getRandomInteger(MIN_TIME_GAP, MAX_TIME_GAP), 'minutes');
+  const timeStart = dayjs().add(getRandomInteger(-Gaps.MAX_DAY_GAP, Gaps.MAX_DAY_GAP), 'day');
+  const timeEnd = dayjs(timeStart).add(getRandomInteger(Gaps.MIN_TIME_GAP, Gaps.MAX_TIME_GAP), 'minutes');
   return {
     id: getId(),
     type: getRandomItem(TYPES),
     timeStart,
     timeEnd,
-    cost: getRandomInteger(MIN_COST, MAX_COST),
-    offers: generateOffers(),
+    cost: getRandomInteger(Costs.MIN_VALUE, Costs.MAX_VALUE),
+    offers: EVENT_OFFERS.length !== 0 ? new Array(getRandomInteger(Lengths.MIN_OFFER, Lengths.MAX_OFFER)).fill().map(() => getRandomItem(EVENT_OFFERS)) : [],
     duration: getDuration(timeStart, timeEnd),
     isFavorite: Boolean(getRandomInteger(0, 1)),
     destination: {
       city: getRandomItem(CITIES),
-      description: DESCRIPTIONS.length !== 0 ? new Array(getRandomInteger(MIN_DESCRIPTION_LENGTH, MAX_DESCRIPTION_LENGTH)).fill().map(() => getRandomItem(DESCRIPTIONS)) : [],
+      description: DESCRIPTIONS.length !== 0 ? new Array(getRandomInteger(Lengths.MIN_DESCRIPTION_LENGTH, Lengths.MAX_DESCRIPTION_LENGTH)).fill().map(() => getRandomItem(DESCRIPTIONS)) : [],
       photos: getPhotos(),
     },
   };
