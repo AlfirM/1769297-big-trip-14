@@ -31,7 +31,6 @@ render(tripEventsElement, new SortingView().getElement(), RenderPosition.BEFOREE
 
 const eventListComponent = new EventListView();
 render(tripEventsElement, eventListComponent.getElement(), RenderPosition.BEFOREEND);
-render(eventListComponent.getElement(), new EventView(events[0]).getElement(), RenderPosition.BEFOREEND)
 
 const renderEvent = (event) => {
   const parentElement = eventListComponent.getElement();
