@@ -28,15 +28,36 @@ export const getDuration = (timeStart, timeEnd) =>
 
   if (days === 0 && hours === 0 && minutes > 0) {
     return `${minutes}M`;
-
-  }else if (days === 0 && hours > 0) {
+  } else if (days === 0 && hours > 0) {
     return `${hours}H ${minutes}M`;
-
-  }else if (days > 0) {
+  } else if (days > 0) {
     return `${days}D ${hours}H ${minutes}M`;
   }
 };
 
 export const humanizeDate = (dueDate, format) => {
   return dayjs(dueDate).format(format);
+};
+
+export const RenderPosition = {
+  AFTERBEGIN: 'afterbegin',
+  BEFOREEND: 'beforeend',
+};
+
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
+
+  return newElement.firstChild;
 };

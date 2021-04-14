@@ -1,3 +1,5 @@
+import { createElement } from '../utils.js';
+
 const createTripCostTemplate = (events) => {
   let totalCost = 0;
 
@@ -18,4 +20,24 @@ const createTripCostTemplate = (events) => {
     </p>`;
 };
 
-export { createTripCostTemplate };
+export default class TripCost {
+  constructor(events) {
+    this._element = null;
+    this._events = events;
+  }
+
+  getTemplate() {
+    return createTripCostTemplate(this._events);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  clearElement() {
+    this._element = null;
+  }
+}

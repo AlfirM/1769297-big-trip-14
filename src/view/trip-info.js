@@ -1,3 +1,5 @@
+import { createElement } from '../utils.js';
+
 const createTripInfoTemplate = (events) => {
   const max_events_count_in_info_board = 3;
   let cities = '';
@@ -21,4 +23,25 @@ const createTripInfoTemplate = (events) => {
             </section>`;
 };
 
-export { createTripInfoTemplate };
+export default class Info {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripInfoTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
