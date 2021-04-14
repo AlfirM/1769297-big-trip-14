@@ -1,42 +1,63 @@
-import {createMenuTemplate} from './view/menu.js';
-import {createTripInfoTemplate} from './view/trip-info.js';
-import {createTripCostTemplate} from './view/trip-cost.js';
-import {createFilterTemplate} from './view/filter.js';
-import {createSortingTemplate} from './view/sorting.js';
-import {createEventTemplate} from './view/event.js';
-import {createEventEditTemplate} from './view/event-edit.js';
-import {createEventNewTemplate} from './view/event-new.js';
+import MenuView from './view/menu.js';
+import InfoView from './view/trip-info.js';
+import TripCostView from './view/trip-cost.js';
+import FilterView from './view/filter.js';
+import SortingView from './view/sorting.js';
+import EventView from './view/event.js';
+import EventEditView from './view/event-edit.js';
+import EventListView from './view/event-list.js';
 import {generateEvent} from './mock/event.js';
+import {render, RenderPosition} from './utils.js';
 
 
 const EVENTS_COUNT = 20;
 
 const events = new Array(EVENTS_COUNT).fill().map(generateEvent);
 
-const render = (container, template, position = 'beforeend') => {
-  container.insertAdjacentHTML(position, template);
-};
-
 const navigationElement = document.querySelector('.trip-controls__navigation');
-render(navigationElement, createMenuTemplate());
+render(navigationElement, new MenuView().getElement(), RenderPosition.BEFOREEND);
 
 const tripMainElement = document.querySelector('.trip-main');
-render(tripMainElement, createTripInfoTemplate(events), 'afterbegin');
+render(tripMainElement, new InfoView(events).getElement(), RenderPosition.AFTERBEGIN);
 
 const tripInfoElement = tripMainElement.querySelector('.trip-info');
-render(tripInfoElement, createTripCostTemplate(events));
+render(tripInfoElement, new TripCostView(events).getElement(), RenderPosition.BEFOREEND);
 
 const filterElement = document.querySelector('.trip-controls__filters');
-render(filterElement, createFilterTemplate());
+render(filterElement, new FilterView().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsElement = document.querySelector('.trip-events');
-render(tripEventsElement, createSortingTemplate());
+render(tripEventsElement, new SortingView().getElement(), RenderPosition.BEFOREEND);
 
-const tripEventsListElement = tripEventsElement.querySelector('.trip-events__list');
+const eventListComponent = new EventListView();
+render(tripEventsElement, eventListComponent.getElement(), RenderPosition.BEFOREEND);
+render(eventListComponent.getElement(), new EventView(events[0]).getElement(), RenderPosition.BEFOREEND)
 
-render(tripEventsListElement, createEventEditTemplate(events[0]));
-render(tripEventsListElement, createEventNewTemplate(events[0]));
+const renderEvent = (event) => {
+  const parentElement = eventListComponent.getElement();
+  const eventComponent = new EventView(event);
+  const editEventComponent = new EventEditView(event);
+
+  const replaceCardToForm = () => {
+    parentElement.replaceChild(editEventComponent.getElement(), eventComponent.getElement());
+  };
+
+  const replaceFormToCard = () => {
+    parentElement.replaceChild(eventComponent.getElement(), editEventComponent.getElement());
+  };
+
+  eventComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    replaceCardToForm();
+  });
+
+  editEventComponent.getElement().addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    replaceFormToCard();
+  });
+
+  render(parentElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+};
 
 for (let i = 0; i < EVENTS_COUNT; i++) {
-  render(tripEventsListElement, createEventTemplate(events[i]), 'beforeend');
+  renderEvent(events[i]);
 }

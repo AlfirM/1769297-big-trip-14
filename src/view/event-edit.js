@@ -1,4 +1,4 @@
-import {humanizeDate} from '../utils.js';
+import { humanizeDate, createElement } from '../utils.js';
 
 const createOfferMarkup = (offers) => {
   return offers
@@ -118,4 +118,25 @@ const createEventEditTemplate = (event) => {
                 </form>`;
 };
 
-export { createEventEditTemplate };
+export default class EventEdit {
+  constructor(event) {
+    this._event = event;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventEditTemplate(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
