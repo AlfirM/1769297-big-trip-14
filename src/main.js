@@ -19,7 +19,7 @@ render(navigationElement, new MenuView().getElement(), RenderPosition.BEFOREEND)
 
 const tripMainElement = document.querySelector('.trip-main');
 
-const filterElement = document.querySelector('.trip-controls__filters'); 
+const filterElement = document.querySelector('.trip-controls__filters');
 render(filterElement, new FilterView().getElement(), RenderPosition.BEFOREEND);
 
 const tripEventsElement = document.querySelector('.trip-events');
@@ -70,7 +70,7 @@ const renderEvent = (event) => {
 
 if (events.length > 0) {
 
-  render(tripMainElement, new InfoView(events).getElement(), RenderPosition.AFTERBEGIN);  
+  render(tripMainElement, new InfoView(events).getElement(), RenderPosition.AFTERBEGIN);
   const tripInfoElement = tripMainElement.querySelector('.trip-info');
   render(tripInfoElement, new TripCostView(events).getElement(), RenderPosition.BEFOREEND);
 
