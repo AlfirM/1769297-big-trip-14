@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {getRandomInteger, getRandomItem, getDuration} from '../utils.js';
+import {getRandomInteger, getRandomItem, getDuration} from '../utils/common.js';
 import {TYPES, CITIES} from '../const.js';
 
 const Costs = {
