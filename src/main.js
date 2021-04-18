@@ -59,7 +59,7 @@ const renderEvent = (event) => {
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  editEventComponent.setFormSubmitHandler((evt) => {
+  editEventComponent.setFormSubmitHandler(() => {
     replaceFormToCard();
     document.addEventListener('keydown', onEscKeyDown);
   });
