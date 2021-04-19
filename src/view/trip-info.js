@@ -1,4 +1,4 @@
-import { createElement } from '../utils.js';
+import AbstractView from './abstract.js';
 
 const createTripInfoTemplate = (events) => {
   const max_events_count_in_info_board = 3;
@@ -23,25 +23,13 @@ const createTripInfoTemplate = (events) => {
             </section>`;
 };
 
-export default class Info {
+export default class Info extends AbstractView{
   constructor(event) {
+    super();
     this._event = event;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripInfoTemplate(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
