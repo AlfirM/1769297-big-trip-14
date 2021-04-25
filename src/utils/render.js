@@ -5,48 +5,65 @@ export const RenderPosition = {
   BEFOREEND: 'beforeend',
 };
 
-export const render = (container, child, place) => {
+export const render = (container, child, place = RenderPosition.BEFOREEND) => {
+  let destinationContainer = '';
+
   if (container instanceof Abstract) {
-    container = container.getElement();
+    destinationContainer = container.getElement();
+  } else {
+    destinationContainer = container;
   }
 
+  let insertedElement = '';
+
   if (child instanceof Abstract) {
-    child = child.getElement();
+    insertedElement = child.getElement();
+  } else {
+    insertedElement = child;
   }
 
   switch (place) {
     case RenderPosition.AFTERBEGIN:
-      container.prepend(child);
+      destinationContainer.prepend(insertedElement);
       break;
     case RenderPosition.BEFOREEND:
-      container.append(child);
+      destinationContainer.append(insertedElement);
       break;
   }
 };
 
 export const createElement = (template) => {
-  const newElement = document.createElement('div'); // 1
-  newElement.innerHTML = template; // 2
+  const newElement = document.createElement('div');
+  newElement.innerHTML = template;
 
-  return newElement.firstChild; // 3
+  return newElement.firstChild;
 };
 
-export const replace = (newChild, oldChild) => {
+export const replace = (oldChild, newChild) => {
+  
+  let oldElement = '';
+
   if (oldChild instanceof Abstract) {
-    oldChild = oldChild.getElement();
+    oldElement = oldChild.getElement();
+  } else {
+    oldElement = oldChild;
   }
+
+  let newElement = '';
 
   if (newChild instanceof Abstract) {
-    newChild = newChild.getElement();
+    newElement = newChild.getElement();
+  } else {
+    newElement = newChild;
   }
 
-  const parent = oldChild.parentElement;
+  const parent = newElement.parentElement;
 
-  if (parent === null || oldChild === null || newChild === null) {
+  if (parent === null || oldElement === null || newElement === null) {
     throw new Error('Can\'t replace unexisting elements');
   }
 
-  parent.replaceChild(newChild, oldChild);
+  parent.replaceChild(oldElement, newElement);
 };
 
 export const remove = (component) => {
