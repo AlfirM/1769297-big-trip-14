@@ -6,21 +6,10 @@ export const RenderPosition = {
 };
 
 export const render = (container, child, place = RenderPosition.BEFOREEND) => {
-  let destinationContainer = '';
 
-  if (container instanceof Abstract) {
-    destinationContainer = container.getElement();
-  } else {
-    destinationContainer = container;
-  }
+  const destinationContainer = container instanceof Abstract ? container.getElement() : container;
 
-  let insertedElement = '';
-
-  if (child instanceof Abstract) {
-    insertedElement = child.getElement();
-  } else {
-    insertedElement = child;
-  }
+  const insertedElement = child instanceof Abstract ? child.getElement() : child;
 
   switch (place) {
     case RenderPosition.AFTERBEGIN:
@@ -40,22 +29,10 @@ export const createElement = (template) => {
 };
 
 export const replace = (oldChild, newChild) => {
-  
-  let oldElement = '';
 
-  if (oldChild instanceof Abstract) {
-    oldElement = oldChild.getElement();
-  } else {
-    oldElement = oldChild;
-  }
+  let oldElement = oldChild instanceof Abstract ? oldChild.getElement() : oldChild;
 
-  let newElement = '';
-
-  if (newChild instanceof Abstract) {
-    newElement = newChild.getElement();
-  } else {
-    newElement = newChild;
-  }
+  let newElement = newChild instanceof Abstract ? newChild.getElement() : newChild;
 
   const parent = newElement.parentElement;
 
