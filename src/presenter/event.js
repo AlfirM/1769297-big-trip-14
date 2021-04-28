@@ -59,6 +59,11 @@ export default class Event {
     remove(prevEditEventComponent);
   }
 
+  destroy() {
+    remove(this._eventComponent);
+    remove(this._editEventComponent);
+  }
+
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceFormToCard();
@@ -98,7 +103,7 @@ export default class Event {
   }
 
   _handleFavoriteClick() {
-    this.changeData(
+    this._changeData(
       Object.assign(
         {},
         this._event,
