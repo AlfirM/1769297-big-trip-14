@@ -27,7 +27,7 @@ export default class TripPresenter {
 
   init(events) {
     this._events = events.slice();
-    this._sourcedBoardEvents = events.slice();
+    this._initialEvents = events.slice();
     this._tripInfoComponent = new InfoView(this._events);
     this._costInfoComponent = new TripCostView(this._events);
     this._renderTrip();
@@ -41,7 +41,7 @@ export default class TripPresenter {
 
   _handleAddToFavorites(updatedEvent) {
     this._events = updateItem(this._events, updatedEvent);
-    this._sourcedBoardEvents = updateItem(this._sourcedBoardEvents, updatedEvent);
+    this._initialEvents = updateItem(this._initialEvents, updatedEvent);
     this._eventPresenter[updatedEvent.id].init(updatedEvent);
   }
 
@@ -72,7 +72,7 @@ export default class TripPresenter {
     render(this._tripEventsContainer, this._noEventsComponent , RenderPosition.BEFOREEND);
   }
 
-  _clearEvents() {
+  _destroyEvents() {
     Object.values(this._eventPresenter).forEach((item) => item.destroy());
     this._eventPresenter = {};
   }
@@ -87,7 +87,7 @@ export default class TripPresenter {
         this._events.sort(sortByPrice);
         break;
       default:
-        this._events = this._sourcedBoardEvents.slice();
+        this._events = this._initialEvents.slice();
     }
 
     this._currentSortType = sortType;
@@ -99,7 +99,7 @@ export default class TripPresenter {
     }
 
     this._sortEvents(sortType);
-    this._clearEvents();
+    this._destroyEvents();
     this._renderEvents();
   }
 
@@ -109,8 +109,10 @@ export default class TripPresenter {
       this._renderCostInfo();
       this._renderSort();
       this._renderEvents();
-    } else {
-      this._renderNoEvents();
-    }
+      return;
+    } 
+
+    this._renderNoEvents();
+    
   }
 }

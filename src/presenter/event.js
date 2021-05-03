@@ -86,7 +86,7 @@ export default class Event {
   _escKeyDownHandler(evt) {
     if (evt.key === ESCAPE_BUTTON_KEY) {
       evt.preventDefault();
-      this._replaceFormToCard();
+      this._handleEventCloseClick();
     }
   }
 
@@ -95,10 +95,12 @@ export default class Event {
   }
 
   _handleEventCloseClick() {
+    this._editEventComponent.reset(this._event);
     this._replaceFormToCard();
   }
 
-  _handleEditFormSubmit() {
+  _handleEditFormSubmit(event) {
+    this._changeData(event);
     this._replaceFormToCard();
   }
 

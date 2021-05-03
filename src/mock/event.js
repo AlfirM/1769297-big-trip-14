@@ -74,8 +74,16 @@ const getRandomPhoto = () => {
   return `http://picsum.photos/248/152?r=${Math.random()}`;
 };
 
-const getPhotos = () => {
+export const getPhotos = () => {
   return new Array(getRandomInteger(Lengths.MIN_PHOTOS_LENGTH, Lengths.MAX_PHOTOS_LENGTH)).fill().map(() => getRandomPhoto());
+};
+
+export const getDescription = () => {
+  return DESCRIPTIONS.length !== 0 ? new Array(getRandomInteger(Lengths.MIN_DESCRIPTION_LENGTH, Lengths.MAX_DESCRIPTION_LENGTH)).fill().map(() => getRandomItem(DESCRIPTIONS)) : [];
+};
+
+export const getOffers = () => {
+  return EVENT_OFFERS.length !== 0 ? new Array(getRandomInteger(Lengths.MIN_OFFER, Lengths.MAX_OFFER)).fill().map(() => getRandomItem(EVENT_OFFERS)) : [];
 };
 
 const getId = () => {
@@ -92,12 +100,12 @@ const generateEvent = () => {
     timeStart,
     timeEnd,
     cost: getRandomInteger(Costs.MIN_VALUE, Costs.MAX_VALUE),
-    offers: EVENT_OFFERS.length !== 0 ? new Array(getRandomInteger(Lengths.MIN_OFFER, Lengths.MAX_OFFER)).fill().map(() => getRandomItem(EVENT_OFFERS)) : [],
+    offers: getOffers(),
     duration: getDuration(timeStart, timeEnd),
     isFavorite: Boolean(getRandomInteger(0, 1)),
     destination: {
       city: getRandomItem(CITIES),
-      description: DESCRIPTIONS.length !== 0 ? new Array(getRandomInteger(Lengths.MIN_DESCRIPTION_LENGTH, Lengths.MAX_DESCRIPTION_LENGTH)).fill().map(() => getRandomItem(DESCRIPTIONS)) : [],
+      description: getDescription(),
       photos: getPhotos(),
     },
   };
