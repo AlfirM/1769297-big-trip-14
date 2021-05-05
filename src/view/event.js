@@ -1,4 +1,4 @@
-import { humanizeDate} from '../utils/common.js';
+import { humanizeDate, getDuration} from '../utils/common.js';
 import AbstractView from './abstract.js';
 
 const createOfferListTemplate = (offers) => {
@@ -26,7 +26,7 @@ const createEventTemplate = (event) => {
           &mdash;
           <time class="event__end-time" datetime="2019-03-18T11:00">${humanizeDate(event.timeEnd,'HH:mm')}</time>
         </p>
-        <p class="event__duration">${event.duration}</p>
+        <p class="event__duration">${getDuration(event.timeStart, event.timeEnd)}</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${event.cost}</span>

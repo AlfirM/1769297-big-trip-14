@@ -30,9 +30,9 @@ export const createElement = (template) => {
 
 export const replace = (oldChild, newChild) => {
 
-  let oldElement = oldChild instanceof Abstract ? oldChild.getElement() : oldChild;
+  const oldElement = oldChild instanceof Abstract ? oldChild.getElement() : oldChild;
 
-  let newElement = newChild instanceof Abstract ? newChild.getElement() : newChild;
+  const newElement = newChild instanceof Abstract ? newChild.getElement() : newChild;
 
   const parent = newElement.parentElement;
 
