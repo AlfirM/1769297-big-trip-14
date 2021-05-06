@@ -110,9 +110,9 @@ export default class TripPresenter {
       this._renderSort();
       this._renderEvents();
       return;
-    } 
+    }
 
     this._renderNoEvents();
-    
+
   }
 }

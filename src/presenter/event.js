@@ -19,9 +19,9 @@ export default class Event {
     this._editEventComponent = null;
     this._mode = Mode.DEFAULT;
 
-    this._handleEventOpenClick = this._handleEventOpenClick.bind(this);
+    this._handleEventOpenButtonClick = this._handleEventOpenButtonClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
-    this._handleEventCloseClick = this._handleEventCloseClick.bind(this);
+    this._handleEventCloseButtonClick = this._handleEventCloseButtonClick.bind(this);
     this._handleEditFormSubmit = this._handleEditFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
@@ -37,9 +37,9 @@ export default class Event {
 
     render(this._eventsList, this._eventComponent, RenderPosition.BEFOREEND);
 
-    this._eventComponent.setEditClickHandler(this._handleEventOpenClick);
+    this._eventComponent.setEditClickHandler(this._handleEventOpenButtonClick);
     this._eventComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._editEventComponent.setClickHandler(this._handleEventCloseClick);
+    this._editEventComponent.setClickHandler(this._handleEventCloseButtonClick);
     this._editEventComponent.setFormSubmitHandler(this._handleEditFormSubmit);
 
     if (prevEventComponent === null || prevEditEventComponent === null) {
@@ -86,15 +86,15 @@ export default class Event {
   _escKeyDownHandler(evt) {
     if (evt.key === ESCAPE_BUTTON_KEY) {
       evt.preventDefault();
-      this._handleEventCloseClick();
+      this._handleEventCloseButtonClick();
     }
   }
 
-  _handleEventOpenClick() {
+  _handleEventOpenButtonClick() {
     this._replaceCardToForm();
   }
 
-  _handleEventCloseClick() {
+  _handleEventCloseButtonClick() {
     this._editEventComponent.reset(this._event);
     this._replaceFormToCard();
   }
