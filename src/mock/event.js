@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import {getRandomInteger, getRandomItem, getDuration} from '../utils/common.js';
 import {TYPES, CITIES} from '../const.js';
+import {nanoid} from 'nanoid';
 
 const Costs = {
   MIN_VALUE: 10,
@@ -21,8 +22,6 @@ const Gaps = {
   MIN_TIME_GAP: 30,
   MAX_TIME_GAP: 3000,
 };
-
-let index = 1;
 
 const DESCRIPTIONS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -87,8 +86,7 @@ export const getOffers = () => {
 };
 
 const getId = () => {
-  index++;
-  return index;
+  return nanoid();
 };
 
 const generateEvent = () => {
