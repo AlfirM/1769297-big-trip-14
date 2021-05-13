@@ -1,6 +1,7 @@
 import EventView from '../view/event.js';
 import EventEditView from '../view/event-edit.js';
 import { render, replace, RenderPosition, remove } from '../utils/render.js';
+import { UserAction, UpdateType } from '../const.js';
 
 const ESCAPE_BUTTON_KEY = 'Escape';
 
@@ -22,6 +23,7 @@ export default class Event {
     this._handleEventOpenButtonClick = this._handleEventOpenButtonClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleEventCloseButtonClick = this._handleEventCloseButtonClick.bind(this);
+    this._handleDeleteButtonClick = this._handleDeleteButtonClick.bind(this);
     this._handleEditFormSubmit = this._handleEditFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
@@ -41,6 +43,7 @@ export default class Event {
     this._eventComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._editEventComponent.setClickHandler(this._handleEventCloseButtonClick);
     this._editEventComponent.setFormSubmitHandler(this._handleEditFormSubmit);
+    this._editEventComponent.setDeleteClickHandler(this._handleDeleteButtonClick);
 
     if (prevEventComponent === null || prevEditEventComponent === null) {
       render(this._eventsList, this._eventComponent, RenderPosition.BEFOREEND);
@@ -100,19 +103,19 @@ export default class Event {
   }
 
   _handleEditFormSubmit(event) {
-    this._changeData(event);
+    this._changeData(UserAction.UPDATE_EVENT, UpdateType.MINOR, event);
     this._replaceFormToCard();
   }
 
   _handleFavoriteClick() {
     this._changeData(
-      Object.assign(
-        {},
-        this._event,
-        {
-          isFavorite: !this._event.isFavorite,
-        },
-      ),
+      UserAction.UPDATE_EVENT,
+      UpdateType.MINOR,
+      Object.assign({}, this._event, { isFavorite: !this._event.isFavorite }),
     );
+  }
+
+  _handleDeleteButtonClick(event) {
+    this._changeData(UserAction.DELETE_EVENT, UpdateType.MINOR, event);
   }
 }
