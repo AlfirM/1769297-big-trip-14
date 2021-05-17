@@ -1,7 +1,6 @@
 import FilterView from '../view/filter.js';
 import { render, RenderPosition, replace, remove } from '../utils/render.js';
-import { filter } from '../utils/filter.js';
-import { FilterType, UpdateType } from '../const.js';
+import { UpdateType } from '../const.js';
 
 export default class FilterPresenter {
   constructor(filterContainer, filterModel, eventsModel) {
@@ -19,10 +18,9 @@ export default class FilterPresenter {
   }
 
   init() {
-    const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
 
-    this._filterComponent = new FilterView(filters, this._filterModel.getFilter());
+    this._filterComponent = new FilterView(this._filterModel.getFilter());
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
 
     if (prevFilterComponent === null) {
@@ -44,24 +42,5 @@ export default class FilterPresenter {
     }
 
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
-  }
-
-  _getFilters() {
-    const events = this._eventsModel.getEvents();
-
-    return [
-      {
-        type: FilterType.EVERYTHING,
-        count: filter[FilterType.EVERYTHING](events).length,
-      },
-      {
-        type: FilterType.FUTURE,
-        count: filter[FilterType.FUTURE](events).length,
-      },
-      {
-        type: FilterType.PAST,
-        count: filter[FilterType.PAST](events).length,
-      },
-    ];
   }
 }

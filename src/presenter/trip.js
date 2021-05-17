@@ -153,6 +153,15 @@ export default class TripPresenter {
     this._renderTrip();
   }
 
+  hideEventsTable() {
+    this._tripEventsContainer.classList.add('trip-events--hidden');
+  }
+
+  showEventsTable() {
+    this._tripEventsContainer.classList.remove('trip-events--hidden');
+    this._handleSortTypeChange(SortType.DAY);
+  }
+
   _renderTrip() {
     const events = this._getEvents();
     if (events.length > 0) {

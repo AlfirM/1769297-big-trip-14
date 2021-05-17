@@ -23,8 +23,14 @@ const createFilterTemplate = (currentFilterType) => {
 };
 
 export default class Filter extends AbstractView{
+  constructor(currentFilterType) {
+    super();
+    this._currentFilter = currentFilterType;
+    this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
+  }
+
   getTemplate() {
-    return createFilterTemplate(this._filters, this._currentFilter);
+    return createFilterTemplate(this._currentFilter);
   }
 
   _filterTypeChangeHandler(evt) {
