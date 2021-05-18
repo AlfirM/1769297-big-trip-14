@@ -36,3 +36,8 @@ export const UpdateType = {
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
 };
+
+export const MenuItem = {
+  EVENTS: 'EVENTS',
+  STATISTICS: 'STATISTICS',
+};

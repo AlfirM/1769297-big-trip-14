@@ -15,10 +15,19 @@ export const getRandomItem = (ITEMS) => {
 
 export const getDuration = (timeStart, timeEnd) =>
 {
+  const duration = dayjs(timeEnd).diff(dayjs(timeStart), 'm');
+
+  return formatDuration(duration);
+};
+
+export const humanizeDate = (dueDate, format) => {
+  return dayjs(dueDate).format(format);
+};
+
+export const formatDuration = (duration) => {
+
   const hours_in_day = 24;
   const minutes_in_hour = 60;
-
-  const duration = dayjs(timeEnd).diff(dayjs(timeStart), 'm');
 
   const hours = Math.floor(duration / minutes_in_hour) % hours_in_day;
 
@@ -33,10 +42,6 @@ export const getDuration = (timeStart, timeEnd) =>
   } else if (days > 0) {
     return `${days}D ${hours}H ${minutes}M`;
   }
-};
-
-export const humanizeDate = (dueDate, format) => {
-  return dayjs(dueDate).format(format);
 };
 
 export const updateItem = (items, update) => {
