@@ -19,14 +19,14 @@ const createEventTemplate = (event) => {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${event.type.toLowerCase()}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${event.type} ${event.destination.city}</h3>
+      <h3 class="event__title">${event.type} ${event.destination.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="2019-03-18T10:30">${humanizeDate(event.timeStart,'HH:mm')}</time>
           &mdash;
           <time class="event__end-time" datetime="2019-03-18T11:00">${humanizeDate(event.timeEnd,'HH:mm')}</time>
         </p>
-        <p class="event__duration">${getDuration(event.timeStart, event.timeEnd)}</p>
+        <p class="event__duration">${getDuration(new Date(event.timeStart), new Date(event.timeEnd))}</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${event.cost}</span>

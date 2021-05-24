@@ -30,57 +30,58 @@ const getTypes = (events) => {
 const getSumCostOfTypes = (events) => {
   const uniqueTypes = getTypes(events);
 
-  const sumCost = uniqueTypes.map((type) => {
-    let sumCost = 0;
-    events.forEach((event) => {
-      if (event.type.toUpperCase() === type.toUpperCase()) {
-        sumCost += event.cost;
-      }
-    });
+  const typeCostData = uniqueTypes.map((type) => {
+    const price = _getEvents(events, type).reduce((typeCost, event) => typeCost + event.cost, 0);
 
-    return sumCost;
+    return {type, price};
   });
 
-  return {types: uniqueTypes, prices: sumCost};
+  const sortedData = typeCostData.sort((a, b) => b.price - a.price);
+
+  const types = sortedData.map((item) => item.type);
+  const prices = sortedData.map((item) => item.price);
+
+  return {types, prices};
 };
 
 const getCountsOfTypes = (events) => {
   const uniqueTypes = getTypes(events);
 
-  const counts = uniqueTypes.map((type) => {
-    let count = 0;
-    events.forEach((event) => {
-      if (event.type.toUpperCase() === type.toUpperCase()) {
-        count += 1;
-      }
-    });
-
-    return count;
+  const typeCountData = uniqueTypes.map((type) => {
+    const typeCount = _getEvents(events, type).length;
+    return {type, typeCount};
   });
 
-  return {types: uniqueTypes, counts};
+  const sortedData = typeCountData.sort((a, b) => b.typeCount - a.typeCount);
+
+  const types = sortedData.map((item) => item.type);
+  const counts = sortedData.map((item) => item.typeCount);
+
+  return {types, counts};
 };
 
 const getDurationsOfTypes = (events) => {
   const uniqueTypes = getTypes(events);
 
-  const durations = uniqueTypes.map((type) => {
-    let duration = 0;
-    events.forEach((event) => {
-      if (event.type.toUpperCase() === type.toUpperCase()) {
-        const eventDuration = dayjs(event.timeEnd).diff(dayjs(event.timeStart), 'm');
-        duration += eventDuration;
-      }
-    });
-    return duration;
+  const typeDurationData = uniqueTypes.map((type) => {
+    const duration = _getEvents(events, type).reduce((duration, event) => duration + dayjs(event.timeEnd).diff(dayjs(event.timeStart), 'm'), 0);
+    return {type, duration};
   });
 
-  return {types: uniqueTypes, durations: durations};
+  const sortedData = typeDurationData.sort((a, b) => b.duration - a.duration);
+
+  const types = sortedData.map((item) => item.type);
+  const durations = sortedData.map((item) => item.duration);
+
+  return {types, durations};
+};
+
+const _getEvents = (events, type) => {
+  return events.filter((event) => event.type.toUpperCase() === type.toUpperCase());
 };
 
 const createMoneyChart = (moneyCtx, events) => {
   const data = getSumCostOfTypes(events);
-
   return new Chart(moneyCtx, {
     plugins: [ChartDataTypes],
     type: 'horizontalBar',

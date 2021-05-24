@@ -10,10 +10,10 @@ const createTripInfoTemplate = (events) => {
   }
 
   if (events.length > max_events_count_in_info_board) {
-    cities = `${events[0].destination.city} &mdash; ... &mdash; ${events[events.length - 1].destination.city}`;
+    cities = `${events[0].destination.name} &mdash; ... &mdash; ${events[events.length - 1].destination.name}`;
   }
   else {
-    cities = `${events[0].destination.city} &mdash; ${events[events.length - 1].destination.city}`;
+    cities = `${events[0].destination.name} &mdash; ${events[events.length - 1].destination.name}`;
   }
 
   const dayStart = dayjs(events[0].timeStart).format('MMM D');
