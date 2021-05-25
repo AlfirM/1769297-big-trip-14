@@ -20,8 +20,8 @@ export default class TripPresenter {
     this._filterModel = filterModel;
     this._isLoading = true;
     this._api = api;
-    this._offers = '';
-    this._destinations = '';
+    this._offers = [];
+    this._destinations = [];
 
     this._eventPresenter = {};
     this._currentSortType = SortType.DAY;
