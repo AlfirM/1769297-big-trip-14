@@ -1,15 +1,15 @@
 import EventEditView from '../view/event-edit.js';
 import { render, RenderPosition, remove } from '../utils/render.js';
 import { UserAction, UpdateType } from '../const.js';
-import {nanoid} from 'nanoid';
 
 const ESCAPE_BUTTON_KEY = 'Escape';
 
 export default class Event {
-  constructor(eventsList, changeData) {
+  constructor(eventsList, changeData, offers, destinations) {
     this._eventsList = eventsList;
     this._changeData = changeData;
-
+    this._offers = offers;
+    this._destinations = destinations;
     this._editEventComponent = null;
 
     this._handleEventCloseButtonClick = this._handleEventCloseButtonClick.bind(this);
@@ -19,7 +19,7 @@ export default class Event {
   }
 
   init() {
-    this._editEventComponent = new EventEditView();
+    this._editEventComponent = new EventEditView(this._event, this._offers, this._destinations);
 
     render(this._eventsList, this._editEventComponent, RenderPosition.AFTERBEGIN);
 
@@ -43,7 +43,7 @@ export default class Event {
   }
 
   _handleFormSubmit(event) {
-    this._changeData(UserAction.ADD_EVENT, UpdateType.MINOR, Object.assign({ id: nanoid()}, event));
+    this._changeData(UserAction.ADD_EVENT, UpdateType.MINOR, event);
     this.destroy();
   }
 
