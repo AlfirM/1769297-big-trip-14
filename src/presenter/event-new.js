@@ -54,4 +54,23 @@ export default class Event {
   _handleEventCloseButtonClick() {
     this.destroy();
   }
+
+  setSaving() {
+    this._editEventComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this._editEventComponent.updateData({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this._editEventComponent.shake(resetFormState);
+  }
 }
