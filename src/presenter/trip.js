@@ -4,7 +4,7 @@ import InfoView from '../view/trip-info.js';
 import TripCostView from '../view/trip-cost.js';
 import SortingView from '../view/sorting.js';
 import NoEventsView from '../view/no-event-view.js';
-import EventPresenter from './event.js';
+import EventPresenter, {State as EventPresenterViewState} from './event.js';
 import EventNewPresenter from './event-new.js';
 import { sortByTime, sortByPrice } from '../utils/event.js';
 import { SortType, UpdateType, UserAction, FilterType } from '../const.js';
@@ -82,31 +82,36 @@ export default class TripPresenter {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_EVENT:
+        this._eventPresenter[update.id].setViewState(EventPresenterViewState.SAVING);
         this._api
           .updateEvent(update)
           .then((response) => {
             this._eventsModel.updateEvent(updateType, response);
           })
           .catch(() => {
+            this._eventPresenter[update.id].setViewState(EventPresenterViewState.ABORTING);
           });
         break;
       case UserAction.ADD_EVENT:
+        this._eventNewPresenter.setSaving();
         this._api
           .addEvent(update)
           .then((response) => {
             this._eventsModel.addEvent(updateType, response);
           })
-          .catch((error) => {
-            alert(error);
+          .catch(() => {
+            this._eventNewPresenter.setAborting();
           });
         break;
       case UserAction.DELETE_EVENT:
+        this._eventPresenter[update.id].setViewState(EventPresenterViewState.DELETING);
         this._api
           .deleteEvent(update)
           .then(() => {
             this._eventsModel.deleteEvent(updateType, update);
           })
           .catch(() => {
+            this._eventPresenter[update.id].setViewState(EventPresenterViewState.ABORTING);
           });
         break;
     }

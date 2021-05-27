@@ -10,6 +10,13 @@ const Mode = {
   EDITING: 'EDITING',
 };
 
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+  ABORTING: 'ABORTING',
+};
+
+
 export default class Event {
   constructor(eventsList, changeData, changeMode, offers, destinations) {
     this._eventsList = eventsList;
@@ -118,5 +125,31 @@ export default class Event {
 
   _handleDeleteButtonClick(event) {
     this._changeData(UserAction.DELETE_EVENT, UpdateType.MINOR, event);
+  }
+
+  setViewState(state) {
+    const resetFormState = () => {
+      this._editEventComponent.updateData({
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    switch (state) {
+      case State.SAVING:
+        this._editEventComponent.updateData({
+          isSaving: true,
+        });
+        break;
+      case State.DELETING:
+        this._editEventComponent.updateData({
+          isDeleting: true,
+        });
+        break;
+      case State.ABORTING:
+        this._eventComponent.shake(resetFormState);
+        this._editEventComponent.shake(resetFormState);
+        break;
+    }
   }
 }

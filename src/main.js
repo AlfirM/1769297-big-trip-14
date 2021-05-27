@@ -68,27 +68,16 @@ const handleSiteMenuClick = (menuItem) => {
   }
 };
 
-
-api
-  .getOffers()
-  .then((offers) => {
+Promise.all([api.getOffers(), api.getDestinations(), api.getEvents()])
+  .then(([offers, destinations, events]) => {
     tripPresenter.setOffers(offers);
+    tripPresenter.setDestinations(destinations);
+    eventsModel.setEvents(UpdateType.INIT, events);
+    render(navigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+    siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
   })
-  .then(() => {
-    api.getDestinations().then((destinations) => {
-      tripPresenter.setDestinations(destinations);
-    });
-  })
-  .then(() => {
-    api.getEvents().then((events) => {
-      eventsModel.setEvents(UpdateType.INIT, events);
-      render(navigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
-      siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-    })
-      .catch((error) => {
-        alert(error);
-        eventsModel.setEvents(UpdateType.INIT, []);
-        render(navigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
-        siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-      });
+  .catch(() => {
+    eventsModel.setEvents(UpdateType.INIT, []);
+    render(navigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+    siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
   });
