@@ -70,14 +70,14 @@ export default class Event extends Observer {
 
   static adaptToServer(event) {
     const adaptedEvent = Object.assign({}, event, {
-      base_price: event.cost,
-      date_from: event.timeStart ? event.timeStart : new Date(),
-      date_to: event.timeEnd ? event.timeEnd : new Date(),
-      destination: event.destination,
-      id: event.id,
-      is_favorite: event.isFavorite ? event.isFavorite : false,
-      offers: event.offers ? event.offers : [],
-      type: event.type ? event.type : DEFAULT_TYPE,
+      'base_price': event.cost,
+      'date_from': event.timeStart ? event.timeStart : new Date(),
+      'date_to': event.timeEnd ? event.timeEnd : new Date(),
+      'destination': event.destination,
+      'id': event.id,
+      'is_favorite': event.isFavorite ? event.isFavorite : false,
+      'offers': event.offers ? event.offers : [],
+      'type': event.type ? event.type : DEFAULT_TYPE,
     });
 
     adaptedEvent.type = adaptedEvent.type.toLowerCase();

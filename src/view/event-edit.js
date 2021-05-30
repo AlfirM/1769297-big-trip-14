@@ -197,7 +197,7 @@ export default class EventEdit extends SmartView {
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-        time_24hr: true,
+        'time_24hr': true,
         defaultDate: this._data.timeStart,
         onChange: this._dateFromChangeHandler,
       });
@@ -213,7 +213,7 @@ export default class EventEdit extends SmartView {
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-        time_24hr: true,
+        'time_24hr': true,
         minDate: this._data.timeStart,
         defaultDate: this._data.timeEnd,
         onChange: this._dateToChangeHandler,
@@ -331,7 +331,7 @@ export default class EventEdit extends SmartView {
       timeStart: new Date(),
       timeEnd: new Date(),
       destination: destinations[0],
-      is_favorite: false,
+      'is_favorite': false,
       offers: [],
       type: DEFAULT_TYPE,
     };

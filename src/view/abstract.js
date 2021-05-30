@@ -2,7 +2,7 @@ import {createElement} from '../utils/render.js';
 
 const SHAKE_ANIMATION_TIMEOUT = 600;
 
-const ANIMATIONSTYLE = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
+const ANIMATION_STYLE = `shake ${SHAKE_ANIMATION_TIMEOUT / 1000}s`;
 
 export default class Abstract {
   constructor() {
@@ -31,7 +31,7 @@ export default class Abstract {
   }
 
   shake(callback) {
-    this.getElement().style.animation = ANIMATIONSTYLE;
+    this.getElement().style.animation = ANIMATION_STYLE;
     setTimeout(() => {
       this.getElement().style.animation = '';
       callback();

@@ -12,7 +12,7 @@ const SuccessHTTPStatusRange = {
   MAX: 299,
 };
 
-const Urls = {
+const Url = {
   POINTS: 'points',
   DESTINATIONS: 'destinations',
   OFFERS: 'offers',
@@ -26,7 +26,7 @@ export default class Api {
 
   addEvent(event) {
     return this._load({
-      url: Urls.POINTS,
+      url: Url.POINTS,
       method: Method.POST,
       body: JSON.stringify(EventsModel.adaptToServer(event)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
@@ -37,19 +37,19 @@ export default class Api {
 
   deleteEvent(event) {
     return this._load({
-      url: `points/${event.id}`,
+      url: `${Url.POINTS}/${event.id}`,
       method: Method.DELETE,
     });
   }
 
   getEvents() {
-    return this._load({url: Urls.POINTS })
+    return this._load({url: Url.POINTS })
       .then(Api.toJSON)
       .then((events) => events.map(EventsModel.adaptToClient));
   }
 
   getDestinations() {
-    return this._load({url: Urls.DESTINATIONS})
+    return this._load({url: Url.DESTINATIONS})
       .then(Api.toJSON)
       .then((destinations) => {
         return destinations;
@@ -57,7 +57,7 @@ export default class Api {
   }
 
   getOffers() {
-    return this._load({url: Urls.OFFERS})
+    return this._load({url: Url.OFFERS})
       .then(Api.toJSON)
       .then((offers) => {
         return offers;
@@ -66,7 +66,7 @@ export default class Api {
 
   updateEvent(event) {
     return this._load({
-      url: `points/${event.id}`,
+      url: `${Url.POINTS}/${event.id}`,
       method: Method.PUT,
       body: JSON.stringify(EventsModel.adaptToServer(event)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
