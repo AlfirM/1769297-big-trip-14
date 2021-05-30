@@ -6,7 +6,7 @@ import SortingView from '../view/sorting.js';
 import NoEventsView from '../view/no-event-view.js';
 import EventPresenter, {State as EventPresenterViewState} from './event.js';
 import EventNewPresenter from './event-new.js';
-import { sortByTime, sortByPrice } from '../utils/event.js';
+import { sortByTime, sortByPrice, sortByDuration } from '../utils/event.js';
 import { SortType, UpdateType, UserAction, FilterType } from '../const.js';
 import { filter } from '../utils/filter.js';
 import LoadingView from '../view/loading.js';
@@ -60,10 +60,11 @@ export default class TripPresenter {
     const filterType = this._filterModel.getFilter();
     const events = this._eventsModel.getEvents();
     const filteredEvents = filter[filterType](events);
-
     switch (this._currentSortType) {
-      case SortType.TIME:
+      case SortType.DAY:
         return filteredEvents.sort(sortByTime);
+      case SortType.TIME:
+        return filteredEvents.sort(sortByDuration);
       case SortType.PRICE:
         return filteredEvents.sort(sortByPrice);
     }
@@ -222,7 +223,6 @@ export default class TripPresenter {
     }
 
     const events = this._getEvents();
-
     if (events.length > 0) {
       this._renderTripInfo(events);
       this._renderCostInfo(events);

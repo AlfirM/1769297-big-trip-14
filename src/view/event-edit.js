@@ -3,7 +3,10 @@ import SmartView from './smart.js';
 import flatpickr from 'flatpickr';
 import {TYPES, EventType} from '../const.js';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
+import he from 'he';
 
+const DEFAULT_TYPE = 'taxi';
+const DEFAULT_COST = 10;
 
 const createOfferMarkup = (allOffersOfCurrentType, checkedOffers, isDisabled) => {
   const allOffers = allOffersOfCurrentType.offers;
@@ -12,11 +15,13 @@ const createOfferMarkup = (allOffersOfCurrentType, checkedOffers, isDisabled) =>
     return '';
   }
   let optionsMarkup = '';
-  allOffers.forEach((offer, index) => {
+
+  allOffers.forEach((offer) => {
     const isChecked  = checkedOffers.find((checkedOffer) => {
       return checkedOffer.title === offer.title;
     });
-    const id = `event-offer-${offer.title.toLowerCase().split(' ').join('-')}-${index + 1}`;
+
+    const id = offer.title;
 
     optionsMarkup += `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="${id}" value="${offer.title}" type="checkbox" name="${id}" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''}>
@@ -27,7 +32,13 @@ const createOfferMarkup = (allOffersOfCurrentType, checkedOffers, isDisabled) =>
     </label>
   </div>`;
   });
-  return optionsMarkup;
+
+  return `<section class="event__section  event__section--offers">
+            <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+            <div class="event__available-offers">
+              ${optionsMarkup}
+            </div>
+          </section>`;
 };
 
 const createTypesMarkup = (currentType) => {
@@ -88,7 +99,7 @@ const createEventEditTemplate = (event, destinations, offers) => {
                       <label class="event__label  event__type-output" for="event-destination-1">
                         ${type}
                       </label>
-                      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${event && event.destination ? event.destination.name : ''}" list="destination-list-1" ${isDisabled ? 'disabled' : ''}>
+                      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(event && event.destination ? event.destination.name : '')}" list="destination-list-1" ${isDisabled ? 'disabled' : ''}>
                       <datalist id="destination-list-1">
                         ${createDestinationList(destinations)}
                       </datalist>
@@ -108,18 +119,13 @@ const createEventEditTemplate = (event, destinations, offers) => {
                       <input class="event__input  event__input--price" id="event-price-1" type="number" min="1" name="event-price" value="${event.cost ? event.cost : ''}" ${isDisabled ? 'disabled' : ''}>
                     </div>
                     <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>${event.isSaving ? 'Saving...' : 'Save'}</button>
-                    <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${!event.type ? 'Close' : (event.isDeleting ? 'Deleting...' : 'Delete')}</button>
+                    <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${!event.id ? 'Cancel' : (event.isDeleting ? 'Deleting...' : 'Delete')}</button>
                     <button class="event__rollup-btn event__rollup-btn--close" type="button" ${isDisabled ? 'disabled' : ''}>
                       <span class="visually-hidden">Open event</span>
                     </button>
                   </header>
                   <section class="event__details">
-                    <section class="event__section  event__section--offers">
-                      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                      <div class="event__available-offers">
-                        ${createOfferMarkup(typeOffers, (event && event.offers ? event.offers : []), isDisabled)}
-                      </div>
-                    </section>
+                      ${createOfferMarkup(typeOffers, (event && event.offers ? event.offers : []), isDisabled)}
                     <section class="event__section  event__section--destination">
                       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                       <p class="event__destination-description">${event.destination ? event.destination.description : ''}</p>
@@ -138,6 +144,9 @@ export default class EventEdit extends SmartView {
     super();
     this._offers = offers;
     this._destinations = destinations;
+    if(!event){
+      event = EventEdit.getBlankEvent(this._destinations);
+    }
     this._data = EventEdit.parseEventToData(event);
     this._datepickerFrom = null;
     this._datepickerTo = null;
@@ -240,12 +249,12 @@ export default class EventEdit extends SmartView {
   _eventEditDestinationChangeHandler(evt) {
     evt.preventDefault();
 
-    const isTrueDestination = this._destinations.some((item) => {
-      return item.name === evt.target.value;
+    const isDestinationExist = this._destinations.some((destination) => {
+      return destination.name === evt.target.value;
     });
 
-    if (!isTrueDestination) {
-      return evt.target.setCustomValidity('This destination was not found');
+    if (!isDestinationExist) {
+      return evt.target.setCustomValidity('Пункт назначения не найден');
     }
 
     const destination = this._destinations.filter((item) => item.name === evt.target.value)[0];
@@ -261,19 +270,19 @@ export default class EventEdit extends SmartView {
 
   _offersChangeHandler(evt) {
     const typeOffers = this._data.offers ? this._data.offers : [];
-    const eventType = this._data.type ? this._data.type : 'taxi';
+    const eventType = this._data.type ? this._data.type : DEFAULT_TYPE;
 
     const selectedOfferName = evt.target.value;
 
     const selectedOfferIndex = typeOffers.findIndex((offer) => {
-      return offer.title === selectedOfferName;
+      return offer.title.toLowerCase() === selectedOfferName.toLowerCase();
     });
 
     if (selectedOfferIndex < 0) {
       const currentOffer = this._offers.find((offers) => {
-        return offers.type === eventType;
+        return offers.type.toLowerCase() === eventType.toLowerCase();
       }).offers.find((offer) => {
-        return offer.title === selectedOfferName;
+        return offer.title.toLowerCase() === selectedOfferName.toLowerCase();
       });
 
       this.updateData({
@@ -288,14 +297,6 @@ export default class EventEdit extends SmartView {
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    const newDestination= this.getElement().querySelector('#event-destination-1');
-    if (this._destinations.map((destination) => destination.name).indexOf(newDestination.value) === -1) {
-      newDestination.value = '';
-      return;
-    }
-    if(!this._data.timeEnd || !this._data.timeStart){
-      return;
-    }
     this._callback.formSubmit(EventEdit.parseDataToEvent(this._data));
   }
 
@@ -324,13 +325,26 @@ export default class EventEdit extends SmartView {
     this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
   }
 
+  static getBlankEvent(destinations){
+    const blankEvent = {
+      cost: DEFAULT_COST,
+      timeStart: new Date(),
+      timeEnd: new Date(),
+      destination: destinations[0],
+      is_favorite: false,
+      offers: [],
+      type: DEFAULT_TYPE,
+    };
+
+    return blankEvent;
+  }
+
   static parseEventToData(event) {
     return Object.assign({}, event);
   }
 
   static parseDataToEvent(data) {
     data = Object.assign({}, data);
-
     delete data.isSaving;
     delete data.isDeleting;
 

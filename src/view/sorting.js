@@ -41,7 +41,7 @@ export default class Sorting  extends AbstractView{
   }
 
   _sortTypeChangeHandler(evt) {
-    if (evt.target.tagName !== 'LABEL') {
+    if (evt.target.tagName !== 'LABEL' || evt.target.parentElement.querySelector('input').hasAttribute('disabled')) {
       return;
     }
 

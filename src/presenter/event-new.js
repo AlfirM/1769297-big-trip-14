@@ -4,7 +4,7 @@ import { UserAction, UpdateType } from '../const.js';
 
 const ESCAPE_BUTTON_KEY = 'Escape';
 
-export default class Event {
+export default class EventNew {
   constructor(eventsList, changeData, offers, destinations) {
     this._eventsList = eventsList;
     this._changeData = changeData;
@@ -26,6 +26,7 @@ export default class Event {
     this._editEventComponent.setClickHandler(this._handleEventCloseButtonClick);
     this._editEventComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._editEventComponent.setDeleteClickHandler(this._handleDeleteButtonClick);
+    document.addEventListener('keydown', this._escKeyDownHandler);
   }
 
   destroy() {
@@ -38,7 +39,7 @@ export default class Event {
   _escKeyDownHandler(evt) {
     if (evt.key === ESCAPE_BUTTON_KEY) {
       evt.preventDefault();
-      this.destroy();
+      this._handleEventCloseButtonClick();
     }
   }
 
