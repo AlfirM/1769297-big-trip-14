@@ -1,5 +1,7 @@
 import Observer from '../utils/observer.js';
 
+const DEFAULT_TYPE = 'taxi';
+
 export default class Event extends Observer {
   constructor() {
     super();
@@ -75,8 +77,10 @@ export default class Event extends Observer {
       id: event.id,
       is_favorite: event.isFavorite ? event.isFavorite : false,
       offers: event.offers ? event.offers : [],
-      type: event.type ? event.type : 'taxi',
+      type: event.type ? event.type : DEFAULT_TYPE,
     });
+
+    adaptedEvent.type = adaptedEvent.type.toLowerCase();
 
     delete adaptedEvent.cost;
     delete adaptedEvent.timeStart;

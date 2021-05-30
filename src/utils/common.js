@@ -1,17 +1,7 @@
 import dayjs from 'dayjs';
 
-export const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-export const getRandomItem = (ITEMS) => {
-  const randomIndex = getRandomInteger(0, ITEMS.length - 1);
-
-  return ITEMS[randomIndex];
-};
+const HOURS_IN_DAY = 24;
+const MINUTEST_IN_HOUR = 60;
 
 export const getDuration = (timeStart, timeEnd) =>
 {
@@ -26,22 +16,19 @@ export const humanizeDate = (dueDate, format) => {
 
 export const formatDuration = (duration) => {
 
-  const hours_in_day = 24;
-  const minutes_in_hour = 60;
+  const hours = Math.floor(duration / MINUTEST_IN_HOUR) % HOURS_IN_DAY;
 
-  const hours = Math.floor(duration / minutes_in_hour) % hours_in_day;
+  const days = Math.floor(duration / (HOURS_IN_DAY * MINUTEST_IN_HOUR));
 
-  const days = Math.floor(duration / (hours_in_day * minutes_in_hour));
-
-  const minutes = duration % minutes_in_hour;
+  const minutes = duration % MINUTEST_IN_HOUR;
 
   if (days === 0 && hours === 0 && minutes > 0) {
     return `${minutes}M`;
-  } else if (days === 0 && hours > 0) {
-    return `${hours}H ${minutes}M`;
-  } else if (days > 0) {
-    return `${days}D ${hours}H ${minutes}M`;
   }
+  if (days === 0 && hours > 0) {
+    return `${hours}H ${minutes}M`;
+  }
+  return `${days}D ${hours}H ${minutes}M`;
 };
 
 export const updateItem = (items, update) => {
