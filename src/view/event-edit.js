@@ -232,8 +232,6 @@ export default class EventEdit extends SmartView {
   _dateToChangeHandler([userDate]) {
 
     const timeStart = dayjs(this._data.timeStart).toDate() > userDate ? userDate : dayjs(this._data.timeStart).toDate();
-    console.log("userDate");
-    console.log(userDate);
     this.updateData({
       timeEnd: userDate,
       timeStart: timeStart,
