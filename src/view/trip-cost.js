@@ -8,7 +8,7 @@ const createTripCostTemplate = (events) => {
   });
 
   events.forEach((event) => {
-    if (event.offers.length !== 0) {
+    if (event.offers.length) {
       event.offers.forEach((offer) => {
         totalCost += offer.price;
       });

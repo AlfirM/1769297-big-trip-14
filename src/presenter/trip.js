@@ -136,7 +136,7 @@ export default class TripPresenter {
     this._sortComponent = new SortingView(this._currentSortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
 
-    render(this._tripEventListContainer, this._sortComponent, RenderPosition.AFTERBEGIN);
+    render(this._tripEventsContainer, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
   _renderEvent(event) {

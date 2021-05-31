@@ -34,7 +34,7 @@ export default class Event {
     this._handleEventCloseButtonClick = this._handleEventCloseButtonClick.bind(this);
     this._handleDeleteButtonClick = this._handleDeleteButtonClick.bind(this);
     this._handleEditFormSubmit = this._handleEditFormSubmit.bind(this);
-    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+    this._escapeButonKeyDownHandler = this._escapeButonKeyDownHandler.bind(this);
   }
 
   init(event) {
@@ -77,24 +77,25 @@ export default class Event {
 
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
+      this._changeData(this._event);
       this._replaceFormToCard();
     }
   }
 
   _replaceCardToForm() {
     replace(this._editEventComponent, this._eventComponent);
-    document.addEventListener('keydown', this._escKeyDownHandler);
+    document.addEventListener('keydown', this._escapeButonKeyDownHandler);
     this._changeMode();
     this._mode = Mode.EDITING;
   }
 
   _replaceFormToCard() {
     replace(this._eventComponent, this._editEventComponent);
-    document.removeEventListener('keydown', this._escKeyDownHandler);
+    document.removeEventListener('keydown', this._escapeButonKeyDownHandler);
     this._mode = Mode.DEFAULT;
   }
 
-  _escKeyDownHandler(evt) {
+  _escapeButonKeyDownHandler(evt) {
     if (evt.key === ESCAPE_BUTTON_KEY) {
       evt.preventDefault();
       this._handleEventCloseButtonClick();

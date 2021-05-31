@@ -4,6 +4,7 @@ import flatpickr from 'flatpickr';
 import {TYPES, EventType} from '../const.js';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import he from 'he';
+import dayjs from 'dayjs';
 
 const DEFAULT_TYPE = 'taxi';
 const DEFAULT_COST = 10;
@@ -47,7 +48,7 @@ const createTypesMarkup = (currentType) => {
       return `<div class="event__type-item">
   <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type"
   value="${type}" ${type.toLowerCase() === currentType ? 'checked' : ''}>
-  <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}</label>
+  <label class="event__type-label  event__type-label--${type.toLowerCase()}" for="event-type-${type}-1">${type}</label>
 </div>`;
     })
     .join(' ');
@@ -207,7 +208,6 @@ export default class EventEdit extends SmartView {
       this._datepickerTo.destroy();
       this._datepickerTo = null;
     }
-
     this._datepickerTo = flatpickr(
       this.getElement().querySelector('#event-end-time-1'),
       {
@@ -221,14 +221,22 @@ export default class EventEdit extends SmartView {
   }
 
   _dateFromChangeHandler([userDate]) {
+
+    const timeEnd = dayjs(this._data.timeEnd).toDate() < userDate ? userDate : dayjs(this._data.timeEnd).toDate();
     this.updateData({
       timeStart: userDate,
+      timeEnd: timeEnd,
     });
   }
 
   _dateToChangeHandler([userDate]) {
+
+    const timeStart = dayjs(this._data.timeStart).toDate() > userDate ? userDate : dayjs(this._data.timeStart).toDate();
+    console.log("userDate");
+    console.log(userDate);
     this.updateData({
       timeEnd: userDate,
+      timeStart: timeStart,
     });
   }
 

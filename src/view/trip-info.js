@@ -25,8 +25,8 @@ const createTripInfoTemplate = (events) => {
 
   routeInfo = `${firstEventData.name} &mdash; ${lastEventData.name}`;
 
-  const dayStart = dayjs(firstEventData.timeStart).format('MMM D');
-  const dayEnd = dayjs(lastEventData.timeEnd).format('MMM D');
+  const dayStart = dayjs(firstEventData.timeStart).format('D MMM');
+  const dayEnd = dayjs(lastEventData.timeEnd).format('D MMM');
 
   return `<section class="trip-main__trip-info  trip-info">
             <div class="trip-info__main">
